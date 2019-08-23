@@ -116,23 +116,94 @@ let teams = [
   }
 ];
 
+// makeJumbo is called on main.js on page load
 const makeJumbo = () => {
   const jumboString = `<div class="jumbotron">
   <h1 class="display-4">Game 🏈 Time</h1>
   <p class="lead">What Time Is It?</p>
   <hr class="my-4">
   <p>The Road to the SUPER BOWL</p>
-  <button class="btn btn-primary btn-lg">Coin Flip</button>
+  <button  id="btn1" class="btn btn-primary btn-lg">Coin Flip</button>
 </div>`;
 printToDom(jumboString,'div1');
+coinFlip();
 };
 
+// makeBtns is being called in coinflip (fn)
 const makeBtns = () => {
   const btnString = `<button id="afc" type="button" class="btn btn-primary">AFC</button>
   <button id="nfc" type="button" class="btn btn-secondary">NFC</button>
   <button id="playoffs" type="button" class="btn btn-success">Playoffs</button>
   <button id="all" type="button" class="btn btn-danger">All</button>`;
   printToDom(btnString,'div2');
+  makeCards(teams); 
+  btnClicks();
+  showall();
+
+};
+
+
+// coinflip is being called in makejumbo (fn)
+const coinFlip = () => {
+  $("#btn1").on('click',makeBtns);
+};
+
+// makeCards is being called in makeBtns (fn)
+const makeCards = (teams) => {
+  let cardString = ``;
+  teams.forEach((squad) => {
+   cardString += `<div class="card" style="width: 18rem;">`;
+   cardString += `<img src="${squad.img}" class="card-img-top" alt="...">`;
+   cardString += `<div class="card-body">`;
+   cardString += `  <h1 class="card-title text-center">${squad.name}</h1>`;
+   cardString += `  <p class="card-text text-center">${squad.conference}</p>`;
+   cardString += `  <p class="card-text text-center">${squad.division}</p>`;
+   cardString += ` </div>`;
+   cardString += `</div>`; 
+  });
+  printToDom(cardString,'div3');
+};
+
+
+
+const btnEvents = (e) => {
+  const btnType = e.target.id;
+    if (btnType === "afc"){
+    let afcTeams = teams.filter(aTeams => aTeams.conference === "AFC");
+    $("#div3").empty();
+    makeCards(afcTeams);
+  } else if (btnType === "nfc"){
+    let nfcTeams = teams.filter(nTeams => nTeams.conference === "NFC");
+    $("#div3").empty();
+    makeCards(nfcTeams);
+  } else {
+    (btnType === "playoffs")
+    let playoffTeams = teams.filter(poTeams => poTeams.madePlayoffsLastSeason === true);
+    $("#div3").empty();
+    makeCards(playoffTeams);
+   }
+  }; 
+  
+  
+ 
+// btnClicks is called in makebtns (fn)
+const btnClicks = () => {
+$("#afc").on('click',btnEvents);
+$("#btn1").hide();
+$("#nfc").on('click',btnEvents);
+$("#playoffs").on('click',btnEvents);
+};
+
+const allTeams = () => {
+  $("#div3").empty();
+  makeCards(teams);
+  $("#btn1").show();
+};
+
+
+
+const showall = () => {
+  $("#all").on('click',allTeams);
 };
 
 
@@ -145,9 +216,4 @@ const makeBtns = () => {
 
 
 
-
-
-
-
-
-export {makeJumbo,makeBtns};
+export {makeJumbo};
