@@ -1,7 +1,17 @@
-#div2{
+#div2,#div3{
   display: flex;
   justify-content: center;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
+.btn{
+  margin: 25px;
+  color: black;
+}
+
+.card{
+  margin: 25px;
+  padding: 25px;
+  background-color: darkgray;
+}
